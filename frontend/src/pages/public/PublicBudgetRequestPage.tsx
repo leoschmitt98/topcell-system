@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+﻿import { FormEvent, useState } from "react";
 import { BadgeCheck, ClipboardCheck, ShieldCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 import { apiPost } from "@/lib/api";
 
 const benefits = [
-  "Triagem tecnica inicial com retorno agil",
-  "Previsao de atendimento com transparencia",
+  "Triagem técnica inicial com retorno ágil",
+  "Previsão de atendimento com transparência",
   "Canal direto para acompanhamento do pedido",
 ];
 
@@ -40,7 +40,7 @@ export default function PublicBudgetRequestPage() {
     setSuccess("");
 
     if (!nome.trim() || !telefone.trim() || !aparelho.trim() || !problema.trim()) {
-      setError("Preencha todos os campos para enviar a solicitacao.");
+      setError("Preencha todos os campos para enviar a solicitação.");
       return;
     }
 
@@ -53,13 +53,13 @@ export default function PublicBudgetRequestPage() {
         problema: problema.trim(),
       });
 
-      setSuccess(`Solicitacao enviada. Numero da OS: #${response.data.osId}.`);
+      setSuccess(`Solicitação enviada. Número da OS: #${response.data.osId}.`);
       setNome("");
       setTelefone("");
       setAparelho("");
       setProblema("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nao foi possivel enviar sua solicitacao.");
+      setError(err instanceof Error ? err.message : "Não foi possível enviar sua solicitação.");
     } finally {
       setLoading(false);
     }
@@ -68,18 +68,18 @@ export default function PublicBudgetRequestPage() {
   return (
     <section className="space-y-6" data-cy="public-budget-page">
       <header className="topcell-surface-strong border-primary/30 p-6">
-        <span className="topcell-tag">Solicitar orcamento</span>
-        <h1 className="mt-3 text-3xl font-bold text-white">Conte o problema e receba avaliacao tecnica da TopCell</h1>
+        <span className="topcell-tag">Solicitar orçamento</span>
+        <h1 className="mt-3 text-3xl font-bold text-white">Conte o problema e receba avaliação técnica da TopCell</h1>
         <p className="mt-2 max-w-3xl text-sm text-blue-100/80">
-          Preencha os campos abaixo para abrir sua solicitacao. Nossa equipe usa essas informacoes para iniciar o
-          diagnostico e direcionar o melhor atendimento.
+          Preencha os campos abaixo para abrir sua solicitação. Nossa equipe usa essas informações para iniciar o
+          diagnóstico e direcionar o melhor atendimento.
         </p>
       </header>
 
       <div className="grid gap-5 lg:grid-cols-[1.4fr_0.8fr]">
         <Card className="topcell-surface topcell-card-fx border-primary/25">
           <CardHeader>
-            <CardTitle className="text-xl text-white">Formulario inicial</CardTitle>
+            <CardTitle className="text-xl text-white">Formulário inicial</CardTitle>
           </CardHeader>
           <CardContent>
             <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit}>
@@ -97,11 +97,11 @@ export default function PublicBudgetRequestPage() {
               </div>
               <div className="space-y-2 md:col-span-2">
                 <Label htmlFor="problema">Problema relatado</Label>
-                <Textarea id="problema" className="bg-slate-950/65" placeholder="Descreva sintomas, quedas, contato com agua ou erro exibido" rows={6} value={problema} onChange={(event) => setProblema(event.target.value)} />
+                <Textarea id="problema" className="bg-slate-950/65" placeholder="Descreva sintomas, quedas, contato com água ou erro exibido" rows={6} value={problema} onChange={(event) => setProblema(event.target.value)} />
               </div>
               <div className="md:col-span-2">
                 <Button type="submit" className="rounded-full px-8 topcell-brand-gradient text-primary-foreground" disabled={loading}>
-                  {loading ? "Enviando..." : "Enviar solicitacao"}
+                  {loading ? "Enviando..." : "Enviar solicitação"}
                 </Button>
               </div>
             </form>
@@ -118,19 +118,19 @@ export default function PublicBudgetRequestPage() {
           <CardContent className="space-y-4 text-sm text-blue-100/80">
             <div className="flex gap-3">
               <BadgeCheck className="mt-0.5 text-primary" size={18} />
-              <p>Recebemos sua solicitacao e iniciamos a triagem tecnica.</p>
+              <p>Recebemos sua solicitação e iniciamos a triagem técnica.</p>
             </div>
             <div className="flex gap-3">
               <ClipboardCheck className="mt-0.5 text-primary" size={18} />
-              <p>Retornamos com valor estimado, prazo e orientacoes iniciais.</p>
+              <p>Retornamos com valor estimado, prazo e orientações iniciais.</p>
             </div>
             <div className="flex gap-3">
               <ShieldCheck className="mt-0.5 text-primary" size={18} />
-              <p>Voce aprova e acompanha todo o fluxo pela plataforma.</p>
+              <p>Você aprova e acompanha todo o fluxo pela plataforma.</p>
             </div>
 
             <div className="rounded-xl border border-primary/30 bg-primary/10 p-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-primary">Beneficios TopCell</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary">Benefícios TopCell</p>
               <ul className="mt-2 space-y-2">
                 {benefits.map((item) => (
                   <li key={item}>• {item}</li>
@@ -143,4 +143,3 @@ export default function PublicBudgetRequestPage() {
     </section>
   );
 }
-

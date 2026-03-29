@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -58,7 +58,7 @@ function ModulePage({ title, description, highlights }: ModulePageProps) {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-blue-100/70">
-                Estrutura visual pronta para evolucao do modulo, mantendo consistencia com o painel TopCell.
+                Estrutura visual pronta para evolução do módulo, mantendo consistência com o painel TopCell.
               </p>
             </CardContent>
           </Card>
@@ -67,11 +67,11 @@ function ModulePage({ title, description, highlights }: ModulePageProps) {
 
       <Card className="admin-stat-card">
         <CardHeader>
-          <CardTitle className="text-base text-white">Proxima etapa</CardTitle>
+          <CardTitle className="text-base text-white">Próxima etapa</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="rounded-lg border border-dashed border-white/20 bg-slate-900/60 p-4 text-sm text-blue-100/70">
-            Este modulo esta com layout base preparado para receber regras de negocio e integracoes futuras.
+            Este módulo esta com layout base preparado para receber regras de negócio e integrações futuras.
           </div>
         </CardContent>
       </Card>
@@ -94,7 +94,7 @@ type FinanceOverviewResponse = {
     caixaEstabelecimento: number;
     retiradaDono: number;
     totalVendas: number;
-    totalLancamentos: number;
+    totalLançamentos: number;
   };
   dailyRevenueData: Array<{ dia: string; faturamento: number; lucro: number }>;
   divisionData: Array<{ name: string; value: number }>;
@@ -102,8 +102,8 @@ type FinanceOverviewResponse = {
   recentTransactions: Array<{ id: string; descricao: string; tipo: string; valor: number; status: string; dataLancamento: string | null }>;
   financialHealth: {
     margemLiquidaPercent: number;
-    saldoPeriodo: number;
-    periodo: { startDate: string; endDate: string; totalDays: number };
+    saldoPeríodo: number;
+    período: { startDate: string; endDate: string; totalDays: number };
   };
 };
 
@@ -126,7 +126,7 @@ const emptyFinanceData: FinanceOverviewResponse = {
     caixaEstabelecimento: 0,
     retiradaDono: 0,
     totalVendas: 0,
-    totalLancamentos: 0,
+    totalLançamentos: 0,
   },
   dailyRevenueData: [],
   divisionData: [],
@@ -134,8 +134,8 @@ const emptyFinanceData: FinanceOverviewResponse = {
   recentTransactions: [],
   financialHealth: {
     margemLiquidaPercent: 0,
-    saldoPeriodo: 0,
-    periodo: { startDate: "", endDate: "", totalDays: 0 },
+    saldoPeríodo: 0,
+    período: { startDate: "", endDate: "", totalDays: 0 },
   },
 };
 
@@ -160,7 +160,7 @@ export function AdminBudgetsPage() {
   const STATUS_OPTIONS: OrcamentoStatus[] = ["pendente", "aprovado", "recusado", "expirado", "convertido_os"];
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [orcamentos, setOrcamentos] = useState<OrcamentoItem[]>([]);
+  const [orçamentos, setOrçamentos] = useState<OrcamentoItem[]>([]);
   const [drafts, setDrafts] = useState<Record<number, { status: OrcamentoStatus; valorEstimado: string; observacoes: string }>>({});
   const [updatingId, setUpdatingId] = useState<number | null>(null);
 
@@ -176,13 +176,13 @@ export function AdminBudgetsPage() {
     return value.charAt(0).toUpperCase() + value.slice(1);
   }
 
-  async function loadOrcamentos() {
+  async function loadOrçamentos() {
     setLoading(true);
     setError("");
     try {
-      const response = await apiGet<ApiResponse<OrcamentoItem[]>>("/api/orcamentos");
+      const response = await apiGet<ApiResponse<OrcamentoItem[]>>("/api/orçamentos");
       const list = Array.isArray(response.data) ? response.data : [];
-      setOrcamentos(list);
+      setOrçamentos(list);
       setDrafts(
         Object.fromEntries(
           list.map((item) => [
@@ -196,7 +196,7 @@ export function AdminBudgetsPage() {
         ) as Record<number, { status: OrcamentoStatus; valorEstimado: string; observacoes: string }>
       );
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nao foi possivel carregar os orcamentos.");
+      setError(err instanceof Error ? err.message : "Não foi possível carregar os orçamentos.");
     } finally {
       setLoading(false);
     }
@@ -209,36 +209,36 @@ export function AdminBudgetsPage() {
     setUpdatingId(id);
     setError("");
     try {
-      await apiPut<ApiResponse<OrcamentoItem>>(`/api/orcamentos/${id}`, {
+      await apiPut<ApiResponse<OrcamentoItem>>(`/api/orçamentos/${id}`, {
         status: draft.status,
         valor_estimado: draft.valorEstimado === "" ? null : Number(draft.valorEstimado),
         observacoes: draft.observacoes,
       });
-      await loadOrcamentos();
+      await loadOrçamentos();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nao foi possivel atualizar o orcamento.");
+      setError(err instanceof Error ? err.message : "Não foi possível atualizar o orçamento.");
     } finally {
       setUpdatingId(null);
     }
   }
 
   useEffect(() => {
-    loadOrcamentos();
+    loadOrçamentos();
   }, []);
 
-  const pendentes = orcamentos.filter((item) => item.status === "pendente").length;
-  const aprovados = orcamentos.filter((item) => item.status === "aprovado" || item.status === "convertido_os").length;
-  const recusados = orcamentos.filter((item) => item.status === "recusado" || item.status === "expirado").length;
+  const pendentes = orçamentos.filter((item) => item.status === "pendente").length;
+  const aprovados = orçamentos.filter((item) => item.status === "aprovado" || item.status === "convertido_os").length;
+  const recusados = orçamentos.filter((item) => item.status === "recusado" || item.status === "expirado").length;
 
   return (
-    <section className="space-y-6" data-cy="admin-orcamentos-page">
+    <section className="space-y-6" data-cy="admin-orçamentos-page">
       <header className="admin-hero p-5 md:p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <h1 className="admin-title">Orcamentos</h1>
-            <p className="admin-subtitle">Controle das solicitacoes dos clientes com aprovacao e acompanhamento comercial.</p>
+            <h1 className="admin-title">Orçamentos</h1>
+            <p className="admin-subtitle">Controle das solicitações dos clientes com aprovação e acompanhamento comercial.</p>
           </div>
-          <Button type="button" className="topcell-brand-gradient text-primary-foreground" onClick={loadOrcamentos} disabled={loading}>
+          <Button type="button" className="topcell-brand-gradient text-primary-foreground" onClick={loadOrçamentos} disabled={loading}>
             <RefreshCcw size={14} className="mr-2" />
             {loading ? "Atualizando..." : "Atualizar"}
           </Button>
@@ -250,11 +250,11 @@ export function AdminBudgetsPage() {
       <div className="grid gap-4 md:grid-cols-3">
         <Card className="admin-stat-card">
           <CardHeader>
-            <CardTitle className="text-base text-white">Fila de solicitacoes</CardTitle>
+            <CardTitle className="text-base text-white">Fila de solicitações</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-white">{pendentes}</p>
-            <p className="text-sm text-blue-100/70">Orcamentos aguardando analise.</p>
+            <p className="text-sm text-blue-100/70">Orçamentos aguardando análise.</p>
           </CardContent>
         </Card>
         <Card className="admin-stat-card">
@@ -272,7 +272,7 @@ export function AdminBudgetsPage() {
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-amber-300">{recusados}</p>
-            <p className="text-sm text-blue-100/70">Solicitacoes encerradas sem conversao.</p>
+            <p className="text-sm text-blue-100/70">Solicitacoes encerradas sem conversão.</p>
           </CardContent>
         </Card>
       </div>
@@ -282,19 +282,19 @@ export function AdminBudgetsPage() {
           <CardTitle className="text-base text-white">Solicitacoes</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          {loading ? <p className="text-sm text-blue-100/70">Carregando orcamentos...</p> : null}
+          {loading ? <p className="text-sm text-blue-100/70">Carregando orçamentos...</p> : null}
 
-          {!loading && orcamentos.length === 0 ? (
+          {!loading && orçamentos.length === 0 ? (
             <div className="rounded-lg border border-dashed border-white/20 bg-slate-900/60 p-4 text-sm text-blue-100/70">
-              Nenhum orcamento encontrado no momento.
+              Nenhum orçamento encontrado no momento.
             </div>
           ) : null}
 
           {!loading &&
-            orcamentos.map((item) => (
+            orçamentos.map((item) => (
               <article key={item.id} className="rounded-xl border border-white/10 bg-slate-900/60 p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <h2 className="text-base font-semibold text-white">Orcamento #{item.id}</h2>
+                  <h2 className="text-base font-semibold text-white">Orçamento #{item.id}</h2>
                   <span className="text-xs text-blue-100/65">Criado em {formatDate(item.createdAt)}</span>
                 </div>
 
@@ -303,7 +303,7 @@ export function AdminBudgetsPage() {
                   <p><strong>Telefone:</strong> {item.clienteTelefone || "-"}</p>
                   <p><strong>OS vinculada:</strong> {item.ordemServicoId ? `#${item.ordemServicoId}` : "-"}</p>
                   <p><strong>Status atual:</strong> {formatStatusLabel(item.status)}</p>
-                  <p className="md:col-span-2"><strong>Descricao:</strong> {item.descricao || "-"}</p>
+                  <p className="md:col-span-2"><strong>Descrição:</strong> {item.descricao || "-"}</p>
                 </div>
 
                 <div className="mt-3 grid gap-2 md:grid-cols-[220px_220px_1fr_auto] md:items-end">
@@ -359,7 +359,7 @@ export function AdminBudgetsPage() {
                   </div>
 
                   <div className="space-y-1">
-                    <Label className="text-xs text-blue-100/70">Observacoes internas</Label>
+                    <Label className="text-xs text-blue-100/70">Observações internas</Label>
                     <Input
                       value={drafts[item.id]?.observacoes ?? ""}
                       onChange={(event) =>
@@ -402,7 +402,7 @@ export function AdminFinancePage() {
   const monthStart = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-01`;
   const todayIso = today.toISOString().slice(0, 10);
 
-  const [periodo, setPeriodo] = useState("mensal");
+  const [período, setPeríodo] = useState("mensal");
   const [dataInicial, setDataInicial] = useState(monthStart);
   const [dataFinal, setDataFinal] = useState(todayIso);
   const [loading, setLoading] = useState(false);
@@ -445,7 +445,7 @@ export function AdminFinancePage() {
       const response = await apiGet<ApiResponse<FinanceOverviewResponse>>(`/api/financeiro?${params.toString()}`);
       setFinanceData(response.data || emptyFinanceData);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nao foi possivel carregar dados do financeiro.");
+      setError(err instanceof Error ? err.message : "Não foi possível carregar dados do financeiro.");
       setFinanceData(emptyFinanceData);
     } finally {
       setLoading(false);
@@ -457,8 +457,8 @@ export function AdminFinancePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function applyPeriodo(value: string) {
-    setPeriodo(value);
+  function applyPeríodo(value: string) {
+    setPeríodo(value);
     const now = new Date();
     const end = now.toISOString().slice(0, 10);
 
@@ -484,15 +484,15 @@ export function AdminFinancePage() {
     {
       title: "Faturamento bruto",
       value: formatMoney(financeData.metrics.faturamentoBruto),
-      helper: `${financeData.metrics.totalVendas} vendas no periodo`,
+      helper: `${financeData.metrics.totalVendas} vendas no período`,
       trend: financeData.metrics.faturamentoBruto > 0 ? "receita" : "--",
       positive: financeData.metrics.faturamentoBruto > 0,
       icon: CircleDollarSign,
     },
     {
-      title: "Lucro liquido",
+      title: "Lucro líquido",
       value: formatMoney(financeData.metrics.lucroLiquido),
-      helper: `Margem liquida: ${financeData.financialHealth.margemLiquidaPercent}%`,
+      helper: `Margem líquida: ${financeData.financialHealth.margemLiquidaPercent}%`,
       trend: financeData.metrics.lucroLiquido >= 0 ? "positivo" : "negativo",
       positive: financeData.metrics.lucroLiquido >= 0,
       icon: TrendingUp,
@@ -500,7 +500,7 @@ export function AdminFinancePage() {
     {
       title: "Despesas reais",
       value: formatMoney(financeData.metrics.despesasReais),
-      helper: "Total de despesas no periodo",
+      helper: "Total de despesas no período",
       trend: financeData.metrics.despesasReais > 0 ? "ativo" : "--",
       positive: financeData.metrics.despesasReais === 0,
       icon: Wallet,
@@ -516,15 +516,15 @@ export function AdminFinancePage() {
     {
       title: "Ticket medio",
       value: formatMoney(financeData.metrics.ticketMedio),
-      helper: "Media por venda no periodo",
+      helper: "Média por venda no período",
       trend: financeData.metrics.ticketMedio > 0 ? "calculado" : "--",
       positive: true,
       icon: Banknote,
     },
     {
-      title: "Media diaria",
+      title: "Média diaria",
       value: formatMoney(financeData.metrics.mediaDiaria),
-      helper: `${financeData.financialHealth.periodo.totalDays} dias no periodo`,
+      helper: `${financeData.financialHealth.período.totalDays} dias no período`,
       trend: financeData.metrics.mediaDiaria > 0 ? "calculado" : "--",
       positive: true,
       icon: CalendarRange,
@@ -532,7 +532,7 @@ export function AdminFinancePage() {
     {
       title: "Caixa estabelecimento",
       value: formatMoney(financeData.metrics.caixaEstabelecimento),
-      helper: "Saldo apos despesas e retiradas",
+      helper: "Saldo após despesas e retiradas",
       trend: financeData.metrics.caixaEstabelecimento >= 0 ? "estavel" : "atencao",
       positive: financeData.metrics.caixaEstabelecimento >= 0,
       icon: Landmark,
@@ -540,7 +540,7 @@ export function AdminFinancePage() {
     {
       title: "Retirada do dono",
       value: formatMoney(financeData.metrics.retiradaDono),
-      helper: "Somatorio por categoria retirada_dono",
+      helper: "Somatório por categoria retirada_dono",
       trend: financeData.metrics.retiradaDono > 0 ? "ativo" : "--",
       positive: true,
       icon: PiggyBank,
@@ -554,20 +554,20 @@ export function AdminFinancePage() {
           <div>
             <h1 className="text-3xl font-bold text-white">Financeiro</h1>
             <p className="mt-1 text-sm text-blue-100/75">
-              Painel estrategico para acompanhar receitas, despesas, composicao de caixa e saude financeira da TopCell.
+              Painel estratégico para acompanhar receitas, despesas, composição de caixa e saúde financeira da TopCell.
             </p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             <div className="space-y-1">
-              <Label htmlFor="periodo">Periodo</Label>
+              <Label htmlFor="período">Período</Label>
               <select
-                id="periodo"
-                value={periodo}
-                onChange={(event) => applyPeriodo(event.target.value)}
+                id="período"
+                value={período}
+                onChange={(event) => applyPeríodo(event.target.value)}
                 className="flex h-10 w-full rounded-md border border-white/15 bg-slate-950/70 px-3 text-sm text-blue-100"
               >
-                <option value="diario">Diario</option>
+                <option value="diario">Diário</option>
                 <option value="semanal">Semanal</option>
                 <option value="mensal">Mensal</option>
               </select>
@@ -632,7 +632,7 @@ export function AdminFinancePage() {
           <CardContent>
             {financeData.dailyRevenueData.length === 0 ? (
               <div className="flex h-[290px] items-center justify-center rounded-xl border border-dashed border-white/15 bg-slate-900/60 text-sm text-blue-100/70">
-                Sem dados de faturamento para o periodo selecionado.
+                Sem dados de faturamento para o período selecionado.
               </div>
             ) : (
               <ChartContainer
@@ -657,15 +657,15 @@ export function AdminFinancePage() {
 
         <Card className="topcell-surface topcell-card-fx border-primary/20">
           <CardHeader>
-            <CardTitle className="text-white">Composicao financeira</CardTitle>
+            <CardTitle className="text-white">Composição financeira</CardTitle>
           </CardHeader>
           <CardContent>
             {divisionData.length === 0 ? (
               <div className="flex h-[290px] items-center justify-center rounded-xl border border-dashed border-white/15 bg-slate-900/60 text-sm text-blue-100/70">
-                Sem dados de composicao financeira para o periodo selecionado.
+                Sem dados de composição financeira para o período selecionado.
               </div>
             ) : (
-              <ChartContainer className="h-[290px] w-full" config={{ composicao: { label: "Composicao", color: "hsl(var(--primary))" } }}>
+              <ChartContainer className="h-[290px] w-full" config={{ composição: { label: "Composicao", color: "hsl(var(--primary))" } }}>
                 <PieChart>
                   <ChartTooltip content={<ChartTooltipContent nameKey="name" />} />
                   <Pie data={divisionData} dataKey="value" nameKey="name" innerRadius={58} outerRadius={92} paddingAngle={2}>
@@ -689,7 +689,7 @@ export function AdminFinancePage() {
           <CardContent>
             {financeData.categoryData.length === 0 ? (
               <div className="flex h-[250px] items-center justify-center rounded-xl border border-dashed border-white/15 bg-slate-900/60 text-sm text-blue-100/70">
-                Sem dados por categoria para o periodo selecionado.
+                Sem dados por categoria para o período selecionado.
               </div>
             ) : (
               <ChartContainer
@@ -714,12 +714,12 @@ export function AdminFinancePage() {
 
         <Card className="topcell-surface topcell-card-fx border-primary/20">
           <CardHeader>
-            <CardTitle className="text-white">Fluxo financeiro rapido</CardTitle>
+            <CardTitle className="text-white">Fluxo financeiro rápido</CardTitle>
           </CardHeader>
           <CardContent>
             {financeData.dailyRevenueData.length === 0 ? (
               <div className="flex h-[250px] items-center justify-center rounded-xl border border-dashed border-white/15 bg-slate-900/60 text-sm text-blue-100/70">
-                Sem fluxo financeiro para exibir no periodo.
+                Sem fluxo financeiro para exibir no período.
               </div>
             ) : (
               <ChartContainer
@@ -752,21 +752,21 @@ export function AdminFinancePage() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="rounded-xl border border-white/10 bg-slate-900/70 p-3">
-              <p className="text-xs uppercase tracking-wide text-blue-100/65">Saude financeira</p>
+              <p className="text-xs uppercase tracking-wide text-blue-100/65">Saúde financeira</p>
               <p className={`mt-1 text-lg font-bold ${financeData.metrics.lucroLiquido >= 0 ? "text-emerald-400" : "text-red-300"}`}>
                 {financeData.metrics.lucroLiquido >= 0 ? "Positiva" : "Ajustar custos"}
               </p>
-              <p className="text-xs text-blue-100/65">Margem liquida: {financeData.financialHealth.margemLiquidaPercent}%</p>
+              <p className="text-xs text-blue-100/65">Margem líquida: {financeData.financialHealth.margemLiquidaPercent}%</p>
             </div>
             <div className="rounded-xl border border-white/10 bg-slate-900/70 p-3">
               <p className="text-xs uppercase tracking-wide text-blue-100/65">Fluxo de caixa</p>
-              <p className="mt-1 text-lg font-bold text-cyan-300">{formatMoney(financeData.financialHealth.saldoPeriodo)}</p>
-              <p className="text-xs text-blue-100/65">Saldo acumulado no periodo selecionado.</p>
+              <p className="mt-1 text-lg font-bold text-cyan-300">{formatMoney(financeData.financialHealth.saldoPeríodo)}</p>
+              <p className="text-xs text-blue-100/65">Saldo acumulado no período selecionado.</p>
             </div>
             <div className="rounded-xl border border-white/10 bg-slate-900/70 p-3">
-              <p className="text-xs uppercase tracking-wide text-blue-100/65">Lancamentos</p>
-              <p className="mt-1 text-lg font-bold text-blue-200">{financeData.metrics.totalLancamentos}</p>
-              <p className="text-xs text-blue-100/65">Total de registros financeiros no periodo.</p>
+              <p className="text-xs uppercase tracking-wide text-blue-100/65">Lançamentos</p>
+              <p className="mt-1 text-lg font-bold text-blue-200">{financeData.metrics.totalLançamentos}</p>
+              <p className="text-xs text-blue-100/65">Total de registros financeiros no período.</p>
             </div>
           </CardContent>
         </Card>
@@ -775,12 +775,12 @@ export function AdminFinancePage() {
       <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
         <Card className="topcell-surface topcell-card-fx border-primary/20">
           <CardHeader>
-            <CardTitle className="text-white">Lancamentos recentes</CardTitle>
+            <CardTitle className="text-white">Lançamentos recentes</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {financeData.recentTransactions.length === 0 ? (
               <div className="rounded-xl border border-dashed border-white/15 bg-slate-900/60 p-4 text-sm text-blue-100/70">
-                Nenhum lancamento encontrado no periodo selecionado.
+                Nenhum lancamento encontrado no período selecionado.
               </div>
             ) : (
               financeData.recentTransactions.map((item) => (
@@ -847,7 +847,7 @@ export function AdminFinancePage() {
                 />
               </div>
               <div className="space-y-1">
-                <Label htmlFor="lucroLiquido">Lucro liquido alvo (%)</Label>
+                <Label htmlFor="lucroLiquido">Lucro líquido alvo (%)</Label>
                 <Input
                   id="lucroLiquido"
                   type="number"
@@ -870,15 +870,15 @@ export function AdminFinancePage() {
               </div>
               <p className="mt-2 text-xs text-blue-100/65">
                 {planejamentoTotal === 100
-                  ? "Distribuicao equilibrada. Pronto para salvar configuracao."
-                  : "Ajuste os percentuais para fechar em 100% e manter consistencia da estrategia."}
+                  ? "Distribuição equilibrada. Pronto para salvar configuração."
+                  : "Ajuste os percentuais para fechar em 100% e manter consistência da estratégia."}
               </p>
             </div>
 
             <div className="flex items-center justify-between rounded-xl border border-primary/25 bg-primary/10 p-3 text-sm">
               <div className="flex items-center gap-2 text-blue-100/85">
                 <AlertTriangle size={15} className="text-primary" />
-                Alerta de orcamento ativo
+                Alerta de orçamento ativo
               </div>
               <Button type="button" className="topcell-brand-gradient text-primary-foreground">
                 <Save size={14} className="mr-2" />
@@ -897,7 +897,8 @@ export function AdminSupportPage() {
     <ModulePage
       title="Atendimento"
       description="Canal interno para mensagens, suporte e acompanhamento de clientes."
-      highlights={["Conversas em aberto", "Triagem de duvidas", "Historico de atendimento"]}
+      highlights={["Conversas em aberto", "Triagem de dúvidas", "Histórico de atendimento"]}
     />
   );
 }
+

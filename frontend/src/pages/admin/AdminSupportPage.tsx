@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from "react";
+﻿import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -104,7 +104,7 @@ export default function AdminSupportPage() {
         setMensagens([]);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nao foi possivel carregar conversas.");
+      setError(err instanceof Error ? err.message : "Não foi possível carregar conversas.");
     } finally {
       setLoading(false);
     }
@@ -115,7 +115,7 @@ export default function AdminSupportPage() {
       const response = await apiGet<ApiResponse<Message[]>>(`/api/atendimento/conversas/${conversaId}/mensagens`);
       setMensagens(Array.isArray(response.data) ? response.data : []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nao foi possivel carregar mensagens.");
+      setError(err instanceof Error ? err.message : "Não foi possível carregar mensagens.");
     }
   }
 
@@ -146,7 +146,7 @@ export default function AdminSupportPage() {
       setSuccess("Resposta enviada.");
       await loadConversas(conversaSelecionadaId);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nao foi possivel enviar mensagem.");
+      setError(err instanceof Error ? err.message : "Não foi possível enviar mensagem.");
     } finally {
       setSending(false);
     }
@@ -166,7 +166,7 @@ export default function AdminSupportPage() {
       setSuccess("Conversa atualizada.");
       await loadConversas(conversaSelecionadaId);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nao foi possivel atualizar conversa.");
+      setError(err instanceof Error ? err.message : "Não foi possível atualizar conversa.");
     }
   }
 
@@ -222,7 +222,7 @@ export default function AdminSupportPage() {
                     <p className="mt-1 text-xs text-blue-100/70">{item.assunto || "Atendimento geral"}</p>
                     <p className="mt-1 text-xs text-blue-100/65">{formatStatus(item.status)}</p>
                     {item.naoLidasCliente > 0 ? (
-                      <p className="mt-1 text-xs text-amber-300">{item.naoLidasCliente} mensagem(ns) nao lida(s)</p>
+                      <p className="mt-1 text-xs text-amber-300">{item.naoLidasCliente} mensagem(ns) não lida(s)</p>
                     ) : null}
                   </button>
                 ))}
@@ -258,13 +258,13 @@ export default function AdminSupportPage() {
                     <select className="admin-field flex h-10 w-full rounded-md border px-3 text-sm" value={prioridade} onChange={(e) => setPrioridade(e.target.value)}>
                       {PRIORIDADE_OPTIONS.map((option) => (
                         <option key={option} value={option}>
-                        {option === "media" ? "media" : option}
+                        {option === "media" ? "Média" : option.charAt(0).toUpperCase() + option.slice(1)}
                         </option>
                       ))}
                     </select>
                   </div>
                   <div className="space-y-1">
-                    <Label>Responsavel</Label>
+                    <Label>Responsável</Label>
                     <Input className="admin-field" value={responsavel} onChange={(e) => setResponsavel(e.target.value)} placeholder="Nome do atendente" />
                   </div>
                 </div>
@@ -324,3 +324,4 @@ export default function AdminSupportPage() {
     </section>
   );
 }
+

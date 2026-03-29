@@ -71,7 +71,7 @@ export default function AdminDashboardPage() {
         });
       } catch (err) {
         if (!active) return;
-        setError(err instanceof Error ? err.message : "Nao foi possivel carregar o dashboard.");
+        setError(err instanceof Error ? err.message : "Não foi possível carregar o dashboard.");
       } finally {
         if (active) setLoading(false);
       }
@@ -93,13 +93,13 @@ export default function AdminDashboardPage() {
     {
       label: "OS em aberto",
       value: String(summary.total_os_abertas),
-      helper: "Recebido, em analise e em conserto no periodo",
+      helper: "Recebido, em análise e em conserto no período",
       icon: ClipboardList,
     },
     {
       label: "OS prontas",
       value: String(summary.total_os_prontas),
-      helper: "Aguardando entrega ao cliente no periodo",
+      helper: "Aguardando entrega ao cliente no período",
       icon: PackageCheck,
     },
     {
@@ -111,7 +111,7 @@ export default function AdminDashboardPage() {
     {
       label: "Valor no periodo",
       value: formatMoney(valorPeriodo),
-      helper: `${formatMoney(summary.valor_servicos_dia)} em servicos`,
+      helper: `${formatMoney(summary.valor_servicos_dia)} em serviços`,
       icon: Sparkles,
     },
     {
@@ -123,7 +123,7 @@ export default function AdminDashboardPage() {
     {
       label: "Estoque baixo",
       value: String(summary.produtos_estoque_baixo),
-      helper: "Produtos abaixo do estoque minimo",
+      helper: "Produtos abaixo do estoque mínimo",
       icon: AlertTriangle,
     },
   ];
@@ -132,7 +132,7 @@ export default function AdminDashboardPage() {
     <section className="space-y-6" data-cy="admin-dashboard-page">
       <header className="admin-hero p-5 md:p-6">
         <h1 className="admin-title">Dashboard</h1>
-        <p className="admin-subtitle">Visao executiva da operacao da assistencia tecnica e da loja.</p>
+        <p className="admin-subtitle">Visão executiva da operação da assistência técnica e da loja.</p>
         <div className="mt-4 grid gap-3 md:grid-cols-[1fr_1fr_auto_auto]">
           <div className="space-y-1">
             <label htmlFor="dashboard-data-inicial" className="text-xs font-medium text-blue-100/75">
@@ -209,4 +209,3 @@ export default function AdminDashboardPage() {
     </section>
   );
 }
-

@@ -31,9 +31,9 @@ const CHAT_STORAGE_KEY = "topcell_public_chat_conversa_id";
 const CHAT_TOKEN_STORAGE_KEY = "topcell_public_chat_conversa_token";
 
 const quickActions = [
-  "Quero solicitar um orcamento",
+  "Quero solicitar um orçamento",
   "Desejo consultar o status da minha OS",
-  "Tenho uma duvida sobre atendimento",
+  "Tenho uma dúvida sobre atendimento",
 ];
 
 export default function PublicChatPage() {
@@ -56,7 +56,7 @@ export default function PublicChatPage() {
       const response = await apiGet<ApiResponse<Message[]>>(`/api/public/atendimento/conversas/${targetId}/mensagens?${params.toString()}`);
       setMensagens(Array.isArray(response.data) ? response.data : []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nao foi possivel atualizar o chat.");
+      setError(err instanceof Error ? err.message : "Não foi possível atualizar o chat.");
     }
   }
 
@@ -93,8 +93,8 @@ export default function PublicChatPage() {
         canal: "site",
       });
       const id = Number(response.data?.id || 0);
-      if (!id) throw new Error("Nao foi possivel iniciar o atendimento.");
-      if (!response.data?.accessToken) throw new Error("Nao foi possivel iniciar o atendimento.");
+      if (!id) throw new Error("Não foi possível iniciar o atendimento.");
+      if (!response.data?.accessToken) throw new Error("Não foi possível iniciar o atendimento.");
       setConversaId(id);
       setConversaToken(response.data.accessToken);
       localStorage.setItem(CHAT_STORAGE_KEY, String(id));
@@ -103,7 +103,7 @@ export default function PublicChatPage() {
       setMensagemInput("");
       await loadMensagens(id, response.data.accessToken);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nao foi possivel iniciar o atendimento.");
+      setError(err instanceof Error ? err.message : "Não foi possível iniciar o atendimento.");
     } finally {
       setLoading(false);
     }
@@ -133,7 +133,7 @@ export default function PublicChatPage() {
       setMensagemInput("");
       await loadMensagens(conversaId);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nao foi possivel enviar a mensagem.");
+      setError(err instanceof Error ? err.message : "Não foi possível enviar a mensagem.");
     } finally {
       setLoading(false);
     }
@@ -151,9 +151,9 @@ export default function PublicChatPage() {
     <section className="space-y-6" data-cy="public-chat-page">
       <header className="topcell-surface-strong border-primary/30 p-6">
         <span className="topcell-tag">Atendimento / Chat</span>
-        <h1 className="mt-3 text-3xl font-bold text-white">Fale com a TopCell em um chat rapido e intuitivo</h1>
+        <h1 className="mt-3 text-3xl font-bold text-white">Fale com a TopCell em um chat rápido e intuitivo</h1>
         <p className="mt-2 max-w-3xl text-sm text-blue-100/80">
-          Converse com nossa equipe para orcamentos, consulta de OS e duvidas gerais.
+          Converse com nossa equipe para orçamentos, consulta de OS e dúvidas gerais.
         </p>
       </header>
 
@@ -176,7 +176,7 @@ export default function PublicChatPage() {
             <div className="max-h-[330px] space-y-3 overflow-y-auto rounded-2xl border border-white/10 bg-slate-950/65 p-4">
               {mensagens.length === 0 ? (
                 <div className="max-w-[84%] rounded-2xl rounded-bl-sm bg-slate-900/90 px-4 py-3 text-sm text-blue-100 shadow-sm">
-                  Ola! Para iniciar, informe seus dados e envie a primeira mensagem.
+                  Olá! Para iniciar, informe seus dados e envie a primeira mensagem.
                 </div>
               ) : (
                 mensagens.map((msg) => (
@@ -209,7 +209,7 @@ export default function PublicChatPage() {
           </div>
 
           <aside className="space-y-3 rounded-2xl border border-primary/25 bg-primary/10 p-4">
-            <p className="text-sm font-semibold text-primary">Atalhos rapidos</p>
+            <p className="text-sm font-semibold text-primary">Atalhos rápidos</p>
             {quickActions.map((label, index) => {
               const Icon = index === 0 ? FileText : index === 1 ? SearchCheck : CircleHelp;
               return (

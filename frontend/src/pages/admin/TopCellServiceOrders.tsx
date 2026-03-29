@@ -224,7 +224,7 @@ export default function TopCellServiceOrders() {
   function handleSendToClient(order: ServiceOrder) {
     const phone = normalizePhoneDigits(order.clienteTelefone);
     if (!phone) {
-      setError("Telefone do cliente invalido para envio.");
+      setError("Telefone do cliente inválido para envio.");
       return;
     }
 
@@ -246,7 +246,7 @@ export default function TopCellServiceOrders() {
       link.remove();
       URL.revokeObjectURL(url);
     } catch {
-      setError("Nao foi possivel gerar o comprovante para download.");
+      setError("Não foi possível gerar o comprovante para download.");
     }
   }
 
@@ -338,7 +338,7 @@ export default function TopCellServiceOrders() {
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="grid gap-2">
-                  <Label htmlFor="valorServico">Valor mao de obra</Label>
+                  <Label htmlFor="valorServico">Valor mão de obra</Label>
                   <Input
                     id="valorServico"
                     className="admin-field"
@@ -350,7 +350,7 @@ export default function TopCellServiceOrders() {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="valorPecas">Valor pecas</Label>
+                  <Label htmlFor="valorPecas">Valor peças</Label>
                   <Input
                     id="valorPecas"
                     className="admin-field"
@@ -421,10 +421,10 @@ export default function TopCellServiceOrders() {
                       <strong>Problema:</strong> {order.problema}
                     </p>
                     <p>
-                      <strong>Mao de obra:</strong> R$ {Number(order.valorServico || 0).toFixed(2)}
+                      <strong>Mão de obra:</strong> R$ {Number(order.valorServico || 0).toFixed(2)}
                     </p>
                     <p>
-                      <strong>Pecas:</strong> R$ {Number(order.valorPecas || 0).toFixed(2)}
+                      <strong>Peças:</strong> R$ {Number(order.valorPecas || 0).toFixed(2)}
                     </p>
                     <p>
                       <strong>Total cliente:</strong> R$ {Number(order.valorTotal || 0).toFixed(2)}
@@ -433,7 +433,7 @@ export default function TopCellServiceOrders() {
 
                   <div className="grid gap-2 md:grid-cols-[220px_220px_220px_auto] md:items-end">
                     <div className="grid gap-1">
-                      <Label className="text-xs text-blue-100/70">Mao de obra</Label>
+                      <Label className="text-xs text-blue-100/70">Mão de obra</Label>
                       <Input
                         className="admin-field"
                         type="number"
@@ -455,7 +455,7 @@ export default function TopCellServiceOrders() {
                       />
                     </div>
                     <div className="grid gap-1">
-                      <Label className="text-xs text-blue-100/70">Pecas</Label>
+                      <Label className="text-xs text-blue-100/70">Peças</Label>
                       <Input
                         className="admin-field"
                         type="number"
@@ -503,7 +503,7 @@ export default function TopCellServiceOrders() {
                       Enviar para cliente
                     </Button>
                     <Button type="button" variant="outline" className="border-primary/35 bg-primary/10 text-primary" onClick={() => handleDownloadPrintable(order)}>
-                      Baixar para impressao
+                      Baixar para impressão
                     </Button>
                   </div>
                 </article>

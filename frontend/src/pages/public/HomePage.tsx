@@ -23,7 +23,7 @@ const shopHighlights = [
 
 const quickLinks = [
   {
-    title: "Solicitar orcamento",
+    title: "Solicitar orçamento",
     description: "Envie os dados do aparelho e receba retorno rápido.",
     to: "/orcamento",
     icon: TabletSmartphone,

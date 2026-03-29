@@ -35,8 +35,8 @@ function normalizeStatus(status: string) {
 
 function formatStatusLabel(status: string) {
   const value = normalizeStatus(status);
-  if (value === "em_analise") return "Em analise";
-  if (value === "aguardando_aprovacao") return "Aguardando aprovacao";
+  if (value === "em_analise") return "Em análise";
+  if (value === "aguardando_aprovacao") return "Aguardando aprovação";
   if (value === "em_conserto") return "Em conserto";
   if (value === "pronto") return "Pronto";
   if (value === "entregue") return "Entregue";
@@ -65,7 +65,7 @@ export default function PublicOSStatusPage() {
     setResultado(null);
 
     if (!clienteNome.trim() || !clienteTelefone.trim() || !numeroOs.trim()) {
-      setError("Preencha nome, telefone e numero da OS.");
+      setError("Preencha nome, telefone e número da OS.");
       return;
     }
 
@@ -79,7 +79,7 @@ export default function PublicOSStatusPage() {
       const response = await apiGet<ApiResponse<OSData>>(`/api/public/os/consultar?${params.toString()}`);
       setResultado(response.data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nao foi possivel consultar a OS.");
+      setError(err instanceof Error ? err.message : "Não foi possível consultar a OS.");
     } finally {
       setLoading(false);
     }
@@ -102,11 +102,11 @@ export default function PublicOSStatusPage() {
       setResultado(response.data);
       setDecisionMessage(
         acao === "aprovar"
-          ? "Servico aprovado com sucesso. A equipe TopCell iniciara o conserto."
-          : "Servico cancelado com sucesso. A loja foi notificada."
+          ? "Serviço aprovado com sucesso. A equipe TopCell iniciará o conserto."
+          : "Serviço cancelado com sucesso. A loja foi notificada."
       );
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nao foi possivel registrar sua decisao.");
+      setError(err instanceof Error ? err.message : "Não foi possível registrar sua decisão.");
     } finally {
       setDecisionLoading(false);
     }
@@ -116,17 +116,17 @@ export default function PublicOSStatusPage() {
     <section className="space-y-6" data-cy="public-os-status-page">
       <header className="topcell-surface-strong border-primary/30 p-6">
         <span className="topcell-tag">Consultar OS</span>
-        <h1 className="mt-3 text-3xl font-bold text-white">Acompanhe o andamento da sua ordem de servico</h1>
+        <h1 className="mt-3 text-3xl font-bold text-white">Acompanhe o andamento da sua ordem de serviço</h1>
         <p className="mt-2 max-w-3xl text-sm text-blue-100/80">
           Informe os dados cadastrados para localizar sua OS. O painel de acompanhamento mostra em qual etapa o seu
-          aparelho esta dentro do processo tecnico.
+          aparelho está dentro do processo técnico.
         </p>
       </header>
 
       <div className="grid gap-5 lg:grid-cols-[1.35fr_0.85fr]">
         <Card className="topcell-surface topcell-card-fx border-primary/25">
           <CardHeader>
-            <CardTitle className="text-xl text-white">Buscar ordem de servico</CardTitle>
+            <CardTitle className="text-xl text-white">Buscar ordem de serviço</CardTitle>
           </CardHeader>
           <CardContent>
             <form className="grid gap-4 md:grid-cols-3" onSubmit={handleConsultar}>
@@ -151,7 +151,7 @@ export default function PublicOSStatusPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="numero-os">Numero da OS</Label>
+                <Label htmlFor="numero-os">Número da OS</Label>
                 <Input
                   id="numero-os"
                   className="bg-slate-950/65"
@@ -186,7 +186,7 @@ export default function PublicOSStatusPage() {
                 {normalizeStatus(resultado.status) === "aguardando_aprovacao" ? (
                   <div className="mt-4 space-y-3">
                     <div className="rounded-lg border border-amber-300/35 bg-amber-500/10 p-3 text-amber-200">
-                      Sua OS esta aguardando confirmacao. Voce pode aprovar ou cancelar o servico.
+                      Sua OS está aguardando confirmação. Você pode aprovar ou cancelar o serviço.
                     </div>
                     <div className="flex flex-wrap gap-2">
                       <Button
@@ -195,7 +195,7 @@ export default function PublicOSStatusPage() {
                         onClick={() => handleDecision("aprovar")}
                         disabled={decisionLoading}
                       >
-                        {decisionLoading ? "Enviando..." : "Aprovar servico"}
+                        {decisionLoading ? "Enviando..." : "Aprovar serviço"}
                       </Button>
                       <Button
                         type="button"
@@ -204,7 +204,7 @@ export default function PublicOSStatusPage() {
                         onClick={() => handleDecision("cancelar")}
                         disabled={decisionLoading}
                       >
-                        {decisionLoading ? "Enviando..." : "Cancelar servico"}
+                        {decisionLoading ? "Enviando..." : "Cancelar serviço"}
                       </Button>
                     </div>
                   </div>

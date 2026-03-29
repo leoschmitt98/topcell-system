@@ -4,7 +4,7 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 
 const publicLinks = [
   { to: "/", label: "Home" },
-  { to: "/orcamento", label: "Solicitar orcamento" },
+  { to: "/orcamento", label: "Solicitar orçamento" },
   { to: "/consultar-os", label: "Consultar OS" },
   { to: "/atendimento", label: "Atendimento" },
 ];
