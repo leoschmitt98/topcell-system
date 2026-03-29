@@ -1,4 +1,4 @@
-Ôªøimport TopCellLogo from "@/components/TopCellLogo";
+import TopCellLogo from "@/components/TopCellLogo";
 import { clearAdminToken } from "@/lib/adminAuth";
 import {
   ClipboardList,
@@ -11,22 +11,25 @@ import {
   Shield,
   ShoppingCart,
   Wallet,
+  X,
 } from "lucide-react";
+import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 const adminLinks = [
   { to: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/admin/ordens-servico", label: "Ordens de Servi√ßo", icon: ClipboardList },
-  { to: "/admin/orcamentos", label: "Or√ßamentos", icon: FileText },
+  { to: "/admin/ordens-servico", label: "Ordens de ServiÁo", icon: ClipboardList },
+  { to: "/admin/orcamentos", label: "OrÁamentos", icon: FileText },
   { to: "/admin/produtos", label: "Produtos", icon: Package },
   { to: "/admin/vendas", label: "Vendas", icon: ShoppingCart },
   { to: "/admin/financeiro", label: "Financeiro", icon: Wallet },
   { to: "/admin/atendimento", label: "Atendimento", icon: MessagesSquare },
-  { to: "/admin/seguranca", label: "Seguran√ßa", icon: Shield },
+  { to: "/admin/seguranca", label: "SeguranÁa", icon: Shield },
 ];
 
 export default function AdminLayout() {
   const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   function handleLogout() {
     clearAdminToken();
@@ -46,7 +49,7 @@ export default function AdminLayout() {
               labelText="TopCell Admin"
             />
             <p className="mt-3 text-sm text-blue-100/75">
-              Gest√£o completa da assist√™ncia t√©cnica, produtos, vendas e controle financeiro.
+              Gest„o completa da assistÍncia tÈcnica, produtos, vendas e controle financeiro.
             </p>
           </div>
 
@@ -79,13 +82,77 @@ export default function AdminLayout() {
           </button>
         </aside>
 
+        {mobileMenuOpen ? (
+          <div className="fixed inset-0 z-50 lg:hidden">
+            <button
+              type="button"
+              aria-label="Fechar menu"
+              className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+
+            <aside className="relative z-10 h-full w-[82%] max-w-[320px] border-r border-white/10 bg-[linear-gradient(178deg,hsl(224,48%,10%),hsl(224,52%,8%))] p-5 text-white shadow-2xl">
+              <div className="mb-6 flex items-start justify-between gap-3">
+                <TopCellLogo
+                  imageClassName="h-10 w-10 rounded-xl"
+                  className="items-start"
+                  labelClassName="text-white"
+                  subtitleClassName="text-blue-100/80"
+                  labelText="TopCell Admin"
+                />
+                <button
+                  type="button"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 bg-white/5 text-blue-100"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              <nav className="space-y-1.5">
+                {adminLinks.map((link) => (
+                  <NavLink
+                    key={`mobile-${link.to}`}
+                    to={link.to}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
+                        isActive
+                          ? "topcell-brand-gradient text-primary-foreground shadow topcell-glow"
+                          : "border border-transparent text-blue-100 hover:border-white/10 hover:bg-white/5 hover:text-white"
+                      }`
+                    }
+                  >
+                    <link.icon size={16} />
+                    {link.label}
+                  </NavLink>
+                ))}
+              </nav>
+
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl border border-primary/35 bg-primary/10 px-3 py-2 text-sm font-semibold text-primary transition hover:bg-primary/20"
+              >
+                <LogOut size={15} />
+                Sair do painel
+              </button>
+            </aside>
+          </div>
+        ) : null}
+
         <div className="flex min-w-0 flex-1 flex-col">
           <header className="border-b border-white/10 bg-slate-950/65 px-4 py-3 backdrop-blur-xl">
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex items-center gap-3">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-primary/35 bg-primary/10 text-primary lg:hidden">
+                <button
+                  type="button"
+                  aria-label="Abrir menu do painel"
+                  onClick={() => setMobileMenuOpen(true)}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-primary/35 bg-primary/10 text-primary lg:hidden"
+                >
                   <Menu size={16} />
-                </span>
+                </button>
                 <div>
                   <p className="text-sm font-semibold text-white">TopCell</p>
                   <p className="text-xs text-blue-100/75">Painel administrativo</p>
@@ -122,7 +189,7 @@ export default function AdminLayout() {
                   to="/"
                   className="rounded-full border border-white/20 bg-slate-900/60 px-4 py-2 text-sm font-semibold text-blue-100 transition hover:border-primary/35"
                 >
-                  √Årea p√∫blica
+                  ¡rea p˙blica
                 </NavLink>
               </div>
             </div>
