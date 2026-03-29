@@ -94,7 +94,7 @@ type FinanceOverviewResponse = {
     caixaEstabelecimento: number;
     retiradaDono: number;
     totalVendas: number;
-    totalLançamentos: number;
+    totalLancamentos: number;
   };
   dailyRevenueData: Array<{ dia: string; faturamento: number; lucro: number }>;
   divisionData: Array<{ name: string; value: number }>;
@@ -102,8 +102,8 @@ type FinanceOverviewResponse = {
   recentTransactions: Array<{ id: string; descricao: string; tipo: string; valor: number; status: string; dataLancamento: string | null }>;
   financialHealth: {
     margemLiquidaPercent: number;
-    saldoPeríodo: number;
-    período: { startDate: string; endDate: string; totalDays: number };
+    saldoPeriodo: number;
+    periodo: { startDate: string; endDate: string; totalDays: number };
   };
 };
 
@@ -126,7 +126,7 @@ const emptyFinanceData: FinanceOverviewResponse = {
     caixaEstabelecimento: 0,
     retiradaDono: 0,
     totalVendas: 0,
-    totalLançamentos: 0,
+    totalLancamentos: 0,
   },
   dailyRevenueData: [],
   divisionData: [],
@@ -134,8 +134,8 @@ const emptyFinanceData: FinanceOverviewResponse = {
   recentTransactions: [],
   financialHealth: {
     margemLiquidaPercent: 0,
-    saldoPeríodo: 0,
-    período: { startDate: "", endDate: "", totalDays: 0 },
+    saldoPeriodo: 0,
+    periodo: { startDate: "", endDate: "", totalDays: 0 },
   },
 };
 
@@ -160,7 +160,7 @@ export function AdminBudgetsPage() {
   const STATUS_OPTIONS: OrcamentoStatus[] = ["pendente", "aprovado", "recusado", "expirado", "convertido_os"];
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [orçamentos, setOrçamentos] = useState<OrcamentoItem[]>([]);
+  const [orcamentos, setOrcamentos] = useState<OrcamentoItem[]>([]);
   const [drafts, setDrafts] = useState<Record<number, { status: OrcamentoStatus; valorEstimado: string; observacoes: string }>>({});
   const [updatingId, setUpdatingId] = useState<number | null>(null);
 
@@ -176,11 +176,11 @@ export function AdminBudgetsPage() {
     return value.charAt(0).toUpperCase() + value.slice(1);
   }
 
-  async function loadOrçamentos() {
+  async function loadOrcamentos() {
     setLoading(true);
     setError("");
     try {
-      const response = await apiGet<ApiResponse<OrcamentoItem[]>>("/api/orçamentos");
+      const response = await apiGet<ApiResponse<OrcamentoItem[]>>("/api/orcamentos");
       const list = Array.isArray(response.data) ? response.data : [];
       setOrçamentos(list);
       setDrafts(
@@ -209,12 +209,12 @@ export function AdminBudgetsPage() {
     setUpdatingId(id);
     setError("");
     try {
-      await apiPut<ApiResponse<OrcamentoItem>>(`/api/orçamentos/${id}`, {
+      await apiPut<ApiResponse<OrcamentoItem>>(`/api/orcamentos/${id}`, {
         status: draft.status,
         valor_estimado: draft.valorEstimado === "" ? null : Number(draft.valorEstimado),
         observacoes: draft.observacoes,
       });
-      await loadOrçamentos();
+      await loadOrcamentos();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Não foi possível atualizar o orçamento.");
     } finally {
@@ -223,22 +223,22 @@ export function AdminBudgetsPage() {
   }
 
   useEffect(() => {
-    loadOrçamentos();
+    loadOrcamentos();
   }, []);
 
-  const pendentes = orçamentos.filter((item) => item.status === "pendente").length;
-  const aprovados = orçamentos.filter((item) => item.status === "aprovado" || item.status === "convertido_os").length;
-  const recusados = orçamentos.filter((item) => item.status === "recusado" || item.status === "expirado").length;
+  const pendentes = orcamentos.filter((item) => item.status === "pendente").length;
+  const aprovados = orcamentos.filter((item) => item.status === "aprovado" || item.status === "convertido_os").length;
+  const recusados = orcamentos.filter((item) => item.status === "recusado" || item.status === "expirado").length;
 
   return (
-    <section className="space-y-6" data-cy="admin-orçamentos-page">
+    <section className="space-y-6" data-cy="admin-orcamentos-page">
       <header className="admin-hero p-5 md:p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <h1 className="admin-title">Orçamentos</h1>
             <p className="admin-subtitle">Controle das solicitações dos clientes com aprovação e acompanhamento comercial.</p>
           </div>
-          <Button type="button" className="topcell-brand-gradient text-primary-foreground" onClick={loadOrçamentos} disabled={loading}>
+          <Button type="button" className="topcell-brand-gradient text-primary-foreground" onClick={loadOrcamentos} disabled={loading}>
             <RefreshCcw size={14} className="mr-2" />
             {loading ? "Atualizando..." : "Atualizar"}
           </Button>
@@ -272,7 +272,7 @@ export function AdminBudgetsPage() {
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-amber-300">{recusados}</p>
-            <p className="text-sm text-blue-100/70">Solicitacoes encerradas sem conversão.</p>
+            <p className="text-sm text-blue-100/70">Solicitações encerradas sem conversão.</p>
           </CardContent>
         </Card>
       </div>
@@ -284,14 +284,14 @@ export function AdminBudgetsPage() {
         <CardContent className="space-y-4">
           {loading ? <p className="text-sm text-blue-100/70">Carregando orçamentos...</p> : null}
 
-          {!loading && orçamentos.length === 0 ? (
+          {!loading && orcamentos.length === 0 ? (
             <div className="rounded-lg border border-dashed border-white/20 bg-slate-900/60 p-4 text-sm text-blue-100/70">
               Nenhum orçamento encontrado no momento.
             </div>
           ) : null}
 
           {!loading &&
-            orçamentos.map((item) => (
+            orcamentos.map((item) => (
               <article key={item.id} className="rounded-xl border border-white/10 bg-slate-900/60 p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <h2 className="text-base font-semibold text-white">Orçamento #{item.id}</h2>
@@ -402,7 +402,7 @@ export function AdminFinancePage() {
   const monthStart = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-01`;
   const todayIso = today.toISOString().slice(0, 10);
 
-  const [período, setPeríodo] = useState("mensal");
+  const [periodo, setPeriodo] = useState("mensal");
   const [dataInicial, setDataInicial] = useState(monthStart);
   const [dataFinal, setDataFinal] = useState(todayIso);
   const [loading, setLoading] = useState(false);
@@ -457,8 +457,8 @@ export function AdminFinancePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function applyPeríodo(value: string) {
-    setPeríodo(value);
+  function applyPeriodo(value: string) {
+    setPeriodo(value);
     const now = new Date();
     const end = now.toISOString().slice(0, 10);
 
@@ -524,7 +524,7 @@ export function AdminFinancePage() {
     {
       title: "Média diaria",
       value: formatMoney(financeData.metrics.mediaDiaria),
-      helper: `${financeData.financialHealth.período.totalDays} dias no período`,
+      helper: `${financeData.financialHealth.periodo.totalDays} dias no período`,
       trend: financeData.metrics.mediaDiaria > 0 ? "calculado" : "--",
       positive: true,
       icon: CalendarRange,
@@ -560,11 +560,11 @@ export function AdminFinancePage() {
 
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             <div className="space-y-1">
-              <Label htmlFor="período">Período</Label>
+              <Label htmlFor="periodo">Período</Label>
               <select
-                id="período"
-                value={período}
-                onChange={(event) => applyPeríodo(event.target.value)}
+                id="periodo"
+                value={periodo}
+                onChange={(event) => applyPeriodo(event.target.value)}
                 className="flex h-10 w-full rounded-md border border-white/15 bg-slate-950/70 px-3 text-sm text-blue-100"
               >
                 <option value="diario">Diário</option>
@@ -665,7 +665,7 @@ export function AdminFinancePage() {
                 Sem dados de composição financeira para o período selecionado.
               </div>
             ) : (
-              <ChartContainer className="h-[290px] w-full" config={{ composição: { label: "Composicao", color: "hsl(var(--primary))" } }}>
+              <ChartContainer className="h-[290px] w-full" config={{ composicao: { label: "Composição", color: "hsl(var(--primary))" } }}>
                 <PieChart>
                   <ChartTooltip content={<ChartTooltipContent nameKey="name" />} />
                   <Pie data={divisionData} dataKey="value" nameKey="name" innerRadius={58} outerRadius={92} paddingAngle={2}>
@@ -760,12 +760,12 @@ export function AdminFinancePage() {
             </div>
             <div className="rounded-xl border border-white/10 bg-slate-900/70 p-3">
               <p className="text-xs uppercase tracking-wide text-blue-100/65">Fluxo de caixa</p>
-              <p className="mt-1 text-lg font-bold text-cyan-300">{formatMoney(financeData.financialHealth.saldoPeríodo)}</p>
+              <p className="mt-1 text-lg font-bold text-cyan-300">{formatMoney(financeData.financialHealth.saldoPeriodo)}</p>
               <p className="text-xs text-blue-100/65">Saldo acumulado no período selecionado.</p>
             </div>
             <div className="rounded-xl border border-white/10 bg-slate-900/70 p-3">
               <p className="text-xs uppercase tracking-wide text-blue-100/65">Lançamentos</p>
-              <p className="mt-1 text-lg font-bold text-blue-200">{financeData.metrics.totalLançamentos}</p>
+              <p className="mt-1 text-lg font-bold text-blue-200">{financeData.metrics.totalLancamentos}</p>
               <p className="text-xs text-blue-100/65">Total de registros financeiros no período.</p>
             </div>
           </CardContent>
@@ -780,7 +780,7 @@ export function AdminFinancePage() {
           <CardContent className="space-y-2">
             {financeData.recentTransactions.length === 0 ? (
               <div className="rounded-xl border border-dashed border-white/15 bg-slate-900/60 p-4 text-sm text-blue-100/70">
-                Nenhum lancamento encontrado no período selecionado.
+                Nenhum lançamento encontrado no período selecionado.
               </div>
             ) : (
               financeData.recentTransactions.map((item) => (
@@ -901,4 +901,5 @@ export function AdminSupportPage() {
     />
   );
 }
+
 
